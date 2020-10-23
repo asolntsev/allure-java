@@ -212,7 +212,7 @@ class StepsAspectsTest {
             final DummyEmail[] emails = new DummyEmail[]{
                     new DummyEmail("test1@email.com", asList("txt", "png")),
                     new DummyEmail("test2@email.com", asList("jpg", "mp4")),
-                    null
+                    null,
             };
             final DummyCard card = new DummyCard("1111222233334444");
 
@@ -222,13 +222,13 @@ class StepsAspectsTest {
         assertThat(results.getTestResults())
                 .flatExtracting(TestResult::getSteps)
                 .extracting(StepResult::getName)
-                .containsExactly("\"[test1@email.com, test2@email.com, null]\"," +
-                        " \"[{address='test1@email.com', attachments='[txt, png]'}," +
-                        " {address='test2@email.com', attachments='[jpg, mp4]'}," +
-                        " null]\"," +
-                        " \"[[txt, png], [jpg, mp4], null]\"," +
-                        " \"12345678\", \"{}\","
-                        + " \"1111222233334444\", \"{missing}\", true");
+                .containsExactly("\"[test1@email.com, test2@email.com, null]\","
+                    + " \"[{address='test1@email.com', attachments='[txt, png]'},"
+                    + " {address='test2@email.com', attachments='[jpg, mp4]'},"
+                    + " null]\","
+                    + " \"[[txt, png], [jpg, mp4], null]\","
+                    + " \"12345678\", \"{}\","
+                    + " \"1111222233334444\", \"{missing}\", true");
     }
 
     @Test
@@ -261,7 +261,7 @@ class StepsAspectsTest {
             Thread[] threads = {
                     new Thread(this::outerStep),
                     new Thread(this::outerStep),
-                    new Thread(this::outerStep)
+                    new Thread(this::outerStep),
             };
             for (Thread thread : threads) {
                 thread.start();
@@ -271,6 +271,7 @@ class StepsAspectsTest {
                     thread.join();
                 }
             } catch (InterruptedException ignored) {
+                Thread.currentThread().interrupt();
             }
         });
 
@@ -331,8 +332,8 @@ class StepsAspectsTest {
     void stepWithVarargs(final String... values) {
     }
 
-    @Step("\"{user.emails.address}\", \"{user.emails}\", \"{user.emails.attachments}\", \"{user.password}\", \"{}\"," +
-            " \"{user.card.number}\", \"{missing}\", {staySignedIn}")
+    @Step("\"{user.emails.address}\", \"{user.emails}\", \"{user.emails.attachments}\", \"{user.password}\", \"{}\","
+        + " \"{user.card.number}\", \"{missing}\", {staySignedIn}")
     private void loginWith(final DummyUser user, final boolean staySignedIn) {
     }
 
@@ -356,6 +357,7 @@ class StepsAspectsTest {
         try {
             Thread.sleep(100);
         } catch (InterruptedException ignored) {
+            Thread.currentThread().interrupt();
         }
     }
 

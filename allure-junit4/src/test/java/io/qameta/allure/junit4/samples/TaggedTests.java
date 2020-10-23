@@ -33,5 +33,6 @@ public class TaggedTests {
     @Test
     @Tags({@Tag(METHOD_TAG1),
             @Tag(METHOD_TAG2)})
-    public void taggedTest() {}
+    public void taggedTest() {
+    }
 }

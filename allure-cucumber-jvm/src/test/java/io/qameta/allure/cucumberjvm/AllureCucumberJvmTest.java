@@ -212,9 +212,9 @@ class AllureCucumberJvmTest {
         final String attachmentContent = new String(bytes, StandardCharsets.UTF_8);
 
         assertThat(attachmentContent)
-                .isEqualTo("name\tlogin\temail\n" +
-                        "Viktor\tclicman\tclicman@ya.ru\n" +
-                        "Viktor2\tclicman2\tclicman2@ya.ru\n"
+                .isEqualTo("name\tlogin\temail\n"
+                        + "Viktor\tclicman\tclicman@ya.ru\n"
+                        + "Viktor2\tclicman2\tclicman2@ya.ru\n"
                 );
 
     }

@@ -32,8 +32,6 @@ public class DummyCard {
 
     @Override
     public String toString() {
-        return "DummyCard{" +
-                "number='" + number + '\'' +
-                '}';
+        return String.format("DummyCard{number='%s'}", number);
     }
 }

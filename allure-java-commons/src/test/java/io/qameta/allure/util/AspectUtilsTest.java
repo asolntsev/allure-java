@@ -36,7 +36,7 @@ class AspectUtilsTest {
 
     public class MyNpeClass {
 
-        Integer value = null;
+        private Integer value;
 
         @Override
         public String toString() {

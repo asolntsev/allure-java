@@ -6,6 +6,12 @@
     <!-- Properties (http://checkstyle.sourceforge.net/config.html#Properties#Checker) -->
     <property name="fileExtensions" value="java, properties, xml"/>
 
+    <module name="SuppressionFilter">
+        <property name="file" value="gradle/quality-configs/checkstyle/suppressions.xml"/>
+<!--        <property name="file" value="${config_loc}/suppressions.xml"/>-->
+<!--        <property name="file" value="${rootProject.projectDir}/gradle/quality-configs/checkstyle/suppressions.xml"/>-->
+    </module>
+
     <!-- Filters (http://checkstyle.sourceforge.net/config_filters.html) -->
     <module name="SuppressWarningsFilter"/>
 
@@ -136,7 +142,9 @@
         <!--<module name="JavadocMethod"/>-->
         <!--<module name="JavadocPackage"/>-->
         <!--<module name="JavadocParagraph"/>-->
-        <module name="JavadocStyle"/>
+        <module name="JavadocStyle">
+            <property name="checkFirstSentence" value="false"/>
+        </module>
         <!--<module name="JavadocTagContinuationIndentation"/>-->
         <module name="JavadocType"/>
         <!--<module name="JavadocVariable"/>-->

@@ -25,22 +25,22 @@ import org.testng.Assert;
 public class HookSteps {
 
     @Before("@WithHooks")
-    public void beforeHook(){
+    public void beforeHook() {
         // nothing
     }
 
     @After("@WithHooks")
-    public void afterHook(){
+    public void afterHook() {
         // nothing
     }
 
     @Before("@BeforeHookWithException")
-    public void beforeHookWithException(){
+    public void beforeHookWithException() {
         Assert.fail("Exception in Hook step");
     }
 
     @After("@AfterHookWithException")
-    public void afterHookWithException(){
+    public void afterHookWithException() {
         Assert.fail("Exception in Hook step");
     }
 

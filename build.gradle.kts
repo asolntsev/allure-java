@@ -17,7 +17,7 @@ buildscript {
         classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4")
         classpath("gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.9")
         classpath("io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE")
-        classpath("ru.vyarus:gradle-quality-plugin:3.3.0")
+        classpath("ru.vyarus:gradle-quality-plugin:3.4.0")
     }
 }
 
@@ -29,6 +29,7 @@ val linkScmDevConnection by extra("scm:git:ssh://git@github.com:allure-framework
 
 val gradleScriptDir by extra("${rootProject.projectDir}/gradle")
 val qualityConfigsDir by extra("$gradleScriptDir/quality-configs")
+val checkstyleConfigsDir by extra("$qualityConfigsDir/checkstyle")
 val spotlessDtr by extra("$qualityConfigsDir/spotless")
 
 tasks.withType(Wrapper::class) {

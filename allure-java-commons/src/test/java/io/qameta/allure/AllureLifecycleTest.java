@@ -64,7 +64,7 @@ class AllureLifecycleTest {
     private AllureLifecycle lifecycle;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         writer = Mockito.mock(AllureResultsWriter.class);
         lifecycle = new AllureLifecycle(writer);
     }
@@ -454,7 +454,7 @@ class AllureLifecycleTest {
         return name;
     }
 
-    private static class StepCall implements Callable<Void> {
+    private static final class StepCall implements Callable<Void> {
 
         private final AllureLifecycle lifecycle;
 

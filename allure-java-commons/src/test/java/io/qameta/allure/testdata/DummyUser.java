@@ -46,10 +46,6 @@ public class DummyUser {
 
     @Override
     public String toString() {
-        return "DummyUser{" +
-                "emails='" + Arrays.toString(emails) + '\'' +
-                ", password='" + password + '\'' +
-                ", card=" + card +
-                '}';
+        return String.format("DummyUser{emails='%s', password='%s', card=%s}", Arrays.toString(emails), password, card);
     }
 }

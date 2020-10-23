@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static io.qameta.allure.util.NamingUtils.processNameTemplate;
+import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -35,25 +36,38 @@ class NamingUtilsTest {
 
 
     public static Stream<Arguments> data() {
+        DummyUser user = new DummyUser(null, "123", null);
         return Stream.of(
-                Arguments.of("", Collections.singletonMap("a", "b"), ""),
-                Arguments.of("", Collections.singletonMap("a", "b"), ""),
-                Arguments.of("Hello word", Collections.emptyMap(), "Hello word"),
+            Arguments.of("", singletonMap("a", "b"), ""),
+            Arguments.of("", singletonMap("a", "b"), ""),
+            Arguments.of("Hello word", Collections.emptyMap(), "Hello word"),
 
-                Arguments.of("Hello {0}", Collections.singletonMap("0", "world"), "Hello world"),
-                Arguments.of("Hello {method}", Collections.singletonMap("method", "world"), "Hello world"),
+            Arguments.of("Hello {0}", singletonMap("0", "world"), "Hello world"),
+            Arguments.of("Hello {method}", singletonMap("method", "world"), "Hello world"),
 
-                Arguments.of("{missing}", Collections.emptyMap(), "{missing}"),
-                Arguments.of("Hello {user}!", Collections.singletonMap("user", "Ivan"), "Hello Ivan!"),
-                Arguments.of("Hello {user}", Collections.singletonMap("user", null), "Hello null"),
-                Arguments.of("Hello {users}", Collections.singletonMap("users", Arrays.asList("Ivan", "Petr")), "Hello [Ivan, Petr]"),
-                Arguments.of("Hello {users}", Collections.singletonMap("users", new String[]{"Ivan", "Petr"}), "Hello [Ivan, Petr]"),
-                Arguments.of("Hello {users}", Collections.singletonMap("users", Collections.singletonMap("a", "b")), "Hello {a=b}"),
-                Arguments.of("Password: {user.password}", Collections.singletonMap("user", new DummyUser(null, "123", null)), "Password: 123"),
-                Arguments.of("Passwords: {users.password}", Collections.singletonMap("users", new DummyUser[]{new DummyUser(null, "123", null)}), "Passwords: [123]"),
-                Arguments.of("Passwords: {users.password}", Collections.singletonMap("users", new DummyUser[]{null, new DummyUser(null, "123", null)}), "Passwords: [null, 123]"),
-                Arguments.of("Passwords: {users.password}", Collections.singletonMap("users", new DummyUser[][]{null, {null, new DummyUser(null, "123", null)}}), "Passwords: [null, [null, 123]]")
+            Arguments.of("{missing}", Collections.emptyMap(), "{missing}"),
+            Arguments.of("Hello {user}!", singletonMap("user", "Ivan"), "Hello Ivan!"),
+            Arguments.of("Hello {user}", singletonMap("user", null), "Hello null"),
+            Arguments.of("Hello {users}", singletonMap("users", Arrays.asList("Ivan", "Petr")), "Hello [Ivan, Petr]"),
+            Arguments.of("Hello {users}", singletonMap("users", new String[]{"Ivan", "Petr"}), "Hello [Ivan, Petr]"),
+            Arguments.of("Hello {users}", singletonMap("users", singletonMap("a", "b")), "Hello {a=b}"),
+            Arguments.of("Password: {user.password}", singletonMap("user", user), "Password: 123"),
+            Arguments.of("Passwords: {users.password}", map(user), "Passwords: [123]"),
+            Arguments.of("Passwords: {users.password}", map(array(null, user)), "Passwords: [null, 123]"),
+            Arguments.of("Passwords: {users.password}", map(null, array(null, user)), "Passwords: [null, [null, 123]]")
         );
+    }
+
+    private static Map<String, DummyUser[][]> map(DummyUser[]... users) {
+        return singletonMap("users", users);
+    }
+
+    private static Map<String, DummyUser[]> map(DummyUser... users) {
+        return singletonMap("users", users);
+    }
+
+    private static DummyUser[] array(DummyUser... users) {
+        return users;
     }
 
     @ParameterizedTest

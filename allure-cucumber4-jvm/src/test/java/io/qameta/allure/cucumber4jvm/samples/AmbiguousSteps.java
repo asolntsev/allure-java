@@ -21,20 +21,20 @@ import cucumber.api.java.en.When;
 /**
  * @author charlie (Dmitry Baev).
  */
-public class AmbigiousSteps {
+public class AmbiguousSteps {
 
-    @When("^ambigious step (.+)$")
-    public void ambigious_1() {
+    @When("^ambiguous step (.+)$")
+    public void ambiguous1() {
         // nothing here
     }
 
-    @When("^ambigious step ([a-z]+)$")
-    public void ambigious_2() {
+    @When("^ambiguous step ([a-z]+)$")
+    public void ambiguous2() {
         // nothing here
     }
 
     @Then("^something bad should happen")
-    public void somethingBadStep(){
+    public void somethingBadStep() {
         //nothing here
     }
 }

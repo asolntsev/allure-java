@@ -223,7 +223,6 @@ class AllureCitrusTest {
             testCase.setTestActionListeners(listeners);
 
             citrus.run(testCase, testContext);
-        } catch (Exception ignored) {
         } finally {
             Allure.setLifecycle(defaultLifecycle);
         }

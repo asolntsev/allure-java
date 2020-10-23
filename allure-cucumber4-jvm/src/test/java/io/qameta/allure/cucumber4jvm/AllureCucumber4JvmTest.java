@@ -61,12 +61,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static io.qameta.allure.util.ResultsUtils.PACKAGE_LABEL_NAME;
 import static io.qameta.allure.util.ResultsUtils.SUITE_LABEL_NAME;
 import static io.qameta.allure.util.ResultsUtils.TEST_CLASS_LABEL_NAME;
 import static java.lang.Thread.currentThread;
+import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
@@ -218,7 +218,7 @@ class AllureCucumber4JvmTest {
                 .flatMap(Collection::stream)
                 .map(StepResult::getAttachments)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .collect(toList());
 
         assertThat(attachments)
                 .extracting(Attachment::getName, Attachment::getType)
@@ -235,9 +235,9 @@ class AllureCucumber4JvmTest {
         final String attachmentContent = new String(bytes, StandardCharsets.UTF_8);
 
         assertThat(attachmentContent)
-                .isEqualTo("name\tlogin\temail\n" +
-                        "Viktor\tclicman\tclicman@ya.ru\n" +
-                        "Viktor2\tclicman2\tclicman2@ya.ru\n"
+                .isEqualTo("name\tlogin\temail\n"
+                    + "Viktor\tclicman\tclicman@ya.ru\n"
+                    + "Viktor2\tclicman2\tclicman2@ya.ru\n"
                 );
 
     }
@@ -253,7 +253,7 @@ class AllureCucumber4JvmTest {
                 .flatMap(Collection::stream)
                 .map(StepResult::getAttachments)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .collect(toList());
 
         assertThat(attachments)
                 .extracting(Attachment::getName, Attachment::getType)
@@ -264,7 +264,7 @@ class AllureCucumber4JvmTest {
 
         final List<String> attachmentContents = writer.getAttachments().values().stream()
                 .map(bytes -> new String(bytes, StandardCharsets.UTF_8))
-                .collect(Collectors.toList());
+                .collect(toList());
 
         assertThat(attachmentContents)
                 .containsExactlyInAnyOrder("text attachment", "image attachment");
@@ -580,7 +580,7 @@ class AllureCucumber4JvmTest {
         assertThat(testResults)
                 .hasSize(3);
 
-        List<TestResult> sortedTestResults = testResults.stream().sorted(byHistoryId).collect(Collectors.toList());
+        final List<TestResult> sortedTestResults = testResults.stream().sorted(byHistoryId).collect(toList());
 
         assertThat(sortedTestResults.get(0).getSteps())
                 .extracting(StepResult::getName)
@@ -685,21 +685,21 @@ class AllureCucumber4JvmTest {
 
     @AllureFeatures.BrokenTests
     @Test
-    void shouldHandleAmbigiousStepsExceptions() {
+    void shouldHandleAmbiguousStepsExceptions() {
         final AllureResultsWriterStub writer = new AllureResultsWriterStub();
-        runFeature(writer, "features/ambigious.feature");
+        runFeature(writer, "features/ambiguous.feature");
 
         final List<TestResult> testResults = writer.getTestResults();
         assertThat(testResults)
                 .extracting(TestResult::getName, TestResult::getStatus)
                 .containsExactlyInAnyOrder(
-                        tuple("Simple scenario with ambigious steps", Status.SKIPPED)
+                        tuple("Simple scenario with ambiguous steps", Status.SKIPPED)
                 );
 
         assertThat(testResults.get(0).getSteps())
                 .extracting(StepResult::getName, StepResult::getStatus)
                 .containsExactly(
-                        tuple("When  ambigious step present", null),
+                        tuple("When  ambiguous step present", null),
                         tuple("Then  something bad should happen", Status.SKIPPED)
                 );
     }
@@ -719,16 +719,17 @@ class AllureCucumber4JvmTest {
         ));
         opts.addAll(Arrays.asList(moreOptions));
         final RuntimeOptions options = new RuntimeOptions(opts);
-        boolean mt = options.isMultiThreaded();
+        final boolean mt = options.isMultiThreaded();
 
-        FeatureSupplier featureSupplier = () -> {
+        final FeatureSupplier featureSupplier = () -> {
             try {
                 final String gherkin = readResource(featureResource);
-                Parser<GherkinDocument> parser = new Parser<>(new AstBuilder());
-                TokenMatcher matcher = new TokenMatcher();
-                GherkinDocument gherkinDocument = parser.parse(gherkin, matcher);
-                List<PickleEvent> pickleEvents = compilePickles(gherkinDocument, featureResource);
-                CucumberFeature feature = new CucumberFeature(gherkinDocument, URI.create(featureResource), gherkin, pickleEvents);
+                final Parser<GherkinDocument> parser = new Parser<>(new AstBuilder());
+                final TokenMatcher matcher = new TokenMatcher();
+                final GherkinDocument gherkinDocument = parser.parse(gherkin, matcher);
+                final List<PickleEvent> pickleEvents = compilePickles(gherkinDocument, featureResource);
+                final CucumberFeature feature =
+                    new CucumberFeature(gherkinDocument, URI.create(featureResource), gherkin, pickleEvents);
 
                 return Collections.singletonList(feature);
             } catch (IOException e) {
@@ -752,7 +753,7 @@ class AllureCucumber4JvmTest {
         if (gherkinDocument.getFeature() == null) {
             return Collections.emptyList();
         }
-        List<PickleEvent> pickleEvents = new ArrayList<>();
+        final List<PickleEvent> pickleEvents = new ArrayList<>();
         for (Pickle pickle : new Compiler().compile(gherkinDocument)) {
             pickleEvents.add(new PickleEvent(resource, pickle));
         }

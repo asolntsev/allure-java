@@ -54,32 +54,8 @@ class ResultsUtilsTest {
 
     @Test
     void shouldCreateLinkFromAnnotation() {
-        io.qameta.allure.model.Link actual = createLink(new Link() {
-            @Override
-            public Class<? extends Annotation> annotationType() {
-                return Link.class;
-            }
-
-            @Override
-            public String value() {
-                return "a_from_annotation";
-            }
-
-            @Override
-            public String name() {
-                return "b_from_annotation";
-            }
-
-            @Override
-            public String url() {
-                return "c_from_annotation";
-            }
-
-            @Override
-            public String type() {
-                return "d_from_annotation";
-            }
-        });
+        io.qameta.allure.model.Link actual = createLink(
+            new DummyLink("b_from_annotation", "d_from_annotation", "c_from_annotation", "a_from_annotation"));
         assertThat(actual)
                 .isNotNull()
                 .hasFieldOrPropertyWithValue("name", "a_from_annotation")

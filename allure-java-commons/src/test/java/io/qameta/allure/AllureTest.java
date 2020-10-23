@@ -144,8 +144,8 @@ class AllureTest {
         final Label second = random(Label.class);
         final Label third = random(Label.class);
 
-        final AllureResults results = runWithinTestContext(
-                () -> getLifecycle().updateTestCase(testResult -> testResult.getLabels().addAll(asList(first, second, third))),
+        final AllureResults results = runWithinTestContext(() ->
+                getLifecycle().updateTestCase(result -> result.getLabels().addAll(asList(first, second, third))),
                 Allure::setLifecycle
         );
 
@@ -304,13 +304,13 @@ class AllureTest {
         });
 
         // Add parameters to step using injected StepContext
-        step("preparation checks", (step) -> {
+        step("preparation checks", step -> {
             step.parameter("a", "a value");
             step.parameter("b", "b value");
         });
 
         // Nested step and dynamic step name
-        step((step) -> {
+        step(step -> {
             String a = step("child 1", () -> "A");
             String b = step("child b", () -> "B");
             String c = step("child b", () -> "C");
@@ -321,7 +321,7 @@ class AllureTest {
         // Create attachments as well as steps
         step("get data", () -> {
             step("build client");
-            List<String> responseData = step("run request", (step) -> {
+            List<String> responseData = step("run request", step -> {
                 step.parameter("authorization", token);
                 step.parameter("url", baseUrl);
                 int[] requestBody = step.parameter("requestBody", new int[]{1, 2, 3});
